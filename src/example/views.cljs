@@ -2,9 +2,21 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]))
 
-(defn ok []
+
+(defn articles []
+  (let [article-count @(rf/subscribe [:article-count])
+        latest @(rf/subscribe [:last-n-articles 10])]
+    [:div
+     [:h1 "Articles"]
+     [:p (str article-count " total.")]
+     [:ul
+      (for [article latest]
+        (let [{:keys [id title url author]} article]
+          [:li {:key id} [:a {:href url} title " - " author]]))]]))
+
+(defn tweets []
   (let [tweet-count @(rf/subscribe [:tweet-count])
-        latest @(rf/subscribe [:latest-10])]
+        latest @(rf/subscribe [:last-n-tweets 10])]
     [:div
      [:h1 "Tweets"]
      [:p (str tweet-count " total.")]
@@ -29,7 +41,9 @@
 (defn app []
   (let [status @(rf/subscribe [:status])]
     (case status
-      :ok [ok]
+      :ok [:div
+           [tweets]
+           [articles]]
       :booting [:p "Booting..."]
       :error [error]
       [:p "Error!"])))

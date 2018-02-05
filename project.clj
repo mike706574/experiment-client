@@ -19,6 +19,7 @@
                  [cljs-ajax "0.6.0"]
                  [binaryage/devtools "0.9.4"]
                  [com.cemerick/url "0.1.1"]
+                 [fun.mike/re-frame-websocket-fx "0.0.1"]
                  [fun.mike/re-frame-spec-interceptor "0.0.1"]]
   :plugins [[lein-cljsbuild "1.1.5"]
             [lein-doo "0.1.7"]

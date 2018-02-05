@@ -11,7 +11,7 @@
 ;; Config
 
 (def host "localhost:8001")
-(def streaming-tweets-url (str "ws://" host "/streaming/tweets"))
+(def streaming-url (str "ws://" host "/streaming/everything"))
 
 ;; Specs
 
@@ -73,16 +73,16 @@
  (fn [db [event]]
    (let [{:keys [type body] :as message} (parse-message event)]
      (case type
-       :article (update db :articles #(cons body %))
-       :tweet (update db :tweets #(cons body %))
+       "article" (update db :articles #(cons body %))
+       "tweet" (update db :tweets #(cons body %))
        (fail (str "Invalid message received.") message)))))
 
 (reg-event-fx
  :connect-websocket
  (fn [{db :db} _]
    {:websocket {:method :get
-                :uri streaming-tweets-url
-                :on-message [:tweet-received]
+                :uri streaming-url
+                :on-message [:message-received]
                 :on-success [:websocket-success]
                 :on-failure [:websocket-failure]}}))
 

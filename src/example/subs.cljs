@@ -19,6 +19,16 @@
    (count (:tweets db))))
 
 (rf/reg-sub
- :latest-10
+ :last-n-tweets
+ (fn [db [_ n]]
+   (take n (:tweets db))))
+
+(rf/reg-sub
+ :article-count
  (fn [db _]
-   (take 10 (:tweets db))))
+   (count (:articles db))))
+
+(rf/reg-sub
+ :last-n-articles
+ (fn [db [_ n]]
+   (take n (:articles db))))
